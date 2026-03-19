@@ -182,4 +182,42 @@ class AuthManager {
       }
     }
   }
+
+  // Easy Auth: check if user is authenticated via /.auth/me
+  async checkAuthStatus() {
+    const user = await this.loadUserInfo();
+    return user !== null;
+  }
+
+  // Show the login screen and hide everything else
+  showLoginScreen() {
+    const loginScreen = document.getElementById('loginScreen');
+    const caseEntryScreen = document.getElementById('caseEntryScreen');
+    const mainApp = document.getElementById('mainApp');
+
+    if (loginScreen) loginScreen.style.display = 'flex';
+    if (caseEntryScreen) caseEntryScreen.style.display = 'none';
+    if (mainApp) mainApp.style.display = 'none';
+  }
+
+  // Hide the login screen
+  hideLoginScreen() {
+    const loginScreen = document.getElementById('loginScreen');
+    if (loginScreen) loginScreen.style.display = 'none';
+  }
+
+  // Redirect to Azure Easy Auth login endpoint
+  redirectToLogin(provider) {
+    const allowedProviders = ['aad', 'github', 'google', 'twitter', 'facebook'];
+    if (!allowedProviders.includes(provider)) {
+      console.error('Invalid auth provider:', provider);
+      return;
+    }
+    window.location.href = `/.auth/login/${encodeURIComponent(provider)}`;
+  }
+
+  // Redirect to Azure Easy Auth logout endpoint
+  redirectToLogout() {
+    window.location.href = '/.auth/logout';
+  }
 }
