@@ -28,18 +28,20 @@ window.currentCaseNumber = currentCaseNumber;
 
 // Application initialization with authentication check
 async function initializeApplication() {
-  console.log('Initializing application...');
+  console.log('[Init] Initializing application...');
   
   // Check authentication status first
   const isAuthenticated = await authManager.checkAuthStatus();
+  console.debug('[Init] checkAuthStatus returned:', isAuthenticated);
+  console.debug('[Init] authManager.user:', authManager.getUser());
   
   if (!isAuthenticated) {
-    console.log('User not authenticated, showing login screen');
+    console.log('[Init] User not authenticated, showing login screen');
     authManager.showLoginScreen();
     return;
   }
   
-  console.log('User authenticated, proceeding with app initialization');
+  console.log('[Init] User authenticated, proceeding with app initialization');
   authManager.hideLoginScreen();
   authManager.updateUserInfo();
   
